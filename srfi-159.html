@@ -670,7 +670,8 @@ var {
 <pre class="code-example">
 (show #f (joined/last displayed
                       (lambda (last) (each "and " last))
-                      '(lions tigers bears) ", "))
+                      '(lions tigers bears)
+                      ", "))
 =&gt; "lions, tigers, and bears"
 </pre>
 </dd>
@@ -684,9 +685,13 @@ var {
 
 <p>
 <pre class="code-example">
-(show #f "(" (joined/dot displayed
-                         (lambda (dot) (each ". " dot))
-                         '(1 2 . 3) " ") ")")
+(show #f
+      "("
+      (joined/dot displayed
+		  (lambda (dot) (each ". " dot))
+		  '(1 2 . 3)
+		  " ")
+      ")")
 =&gt; "(1 2 . 3)"
 </pre>
 </dd>
