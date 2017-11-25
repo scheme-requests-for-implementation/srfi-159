@@ -281,7 +281,6 @@ var {
   <var>output-dest</var> is <code>#f</code> and unspecified otherwise.
 </dd>
 
-<p>
 
 <p>
 <h2><a name="Formatting-Objects">Formatting Objects</a></h2>
@@ -305,11 +304,29 @@ var {
 <dd class="proc-def">
 
 <p>
-  Outputs <var>obj</var> using <code>write</code> semantics.  Uses the current numeric
-  formatting settings to the extent that the written result can still
-  be passed to <code>read</code>, though may lose precision.  Specifically,
-  the current radix is used if set to any of 2, 8, 10 or 16, and the
-  fixed point precision is used if specified and the radix is 10.
+  Outputs <var>obj</var> using <code>write</code> semantics.  Uses the current
+  <code>numeric</code> formatting settings to the extent that the written
+  result can still
+  be passed to <code>read</code>, possibly with loss of precision.
+  Specifically,
+  the current <var>radix</var> is used if set to any of 2, 8, 10 or 16, and the
+  fixed point <var>precision</var> is used if specified and the
+  <var>radix</var> is 10.
+<p>
+<pre class="code-example">
+(show #f (written (cons 0 1)))
+=&gt; "(0 . 1)"
+</pre>
+
+<pre class="code-example">
+(show #f 1.5 " " (with ((precision 0)) 1.5))
+=&gt; "1.5 2"
+</pre>
+
+<pre class="code-example">
+(show #f 1/7 " " (with ((precision 3)) 1/7)  " " (with ((precision 20)) 1/7))
+=&gt; "1/7 0.143 0.14285714285714285714"
+</pre>
 
 <p>
   Implementations should allow arbitrary precision for exact rational
@@ -358,14 +375,18 @@ var {
 <dd class="proc-def">
 <p>
   Outputs the string <var>str</var>, escaping any quote or escape characters.
-  If <var>esc-ch</var> is <code>#f</code>, escapes only the <var>quote-ch</var> by doubling it,
-  as in SQL strings and CSV values.  If <var>renamer</var> is provided, it
-  should be a procedure of one character which maps that character to
-  its escape value, e.g. <code>#\newline =&gt; #\n</code>, or <code>#f</code> if there
-  is no escape value.
+  If <var>esc-ch</var>, which defaults to <code>#\\</code>, is <code>#f</code>,
+  escapes only the <var>quote-ch</var>, which defaults to <code>#\"</code>,
+  by doubling it, as in SQL strings and CSV values.  If <var>renamer</var> is
+  provided, it should be a procedure of one character which maps that
+  character to its escape value, e.g. <code>#\newline =&gt; #\n</code>,
+  or <code>#f</code> if there is no escape value.
 
 <p>
 <pre class="code-example">
+(show #f (escaped "hi, bob!"))
+=&gt; "hi, bob!"
+
 (show #f (escaped "hi, \"bob!\""))
 =&gt; "hi, \"bob!\""
 </pre>
@@ -449,13 +470,14 @@ var {
 </dd>
 
 
-<dt>(<a name="proc-numeric/si"><code class="proc-def">numeric/si</code></a> <var>num</var> <var>[base</var> <var>suffix]</var>)
+<dt>(<a name="proc-numeric/si"><code class="proc-def">numeric/si</code></a> <var>num</var> <var>[base</var> <var>separator]</var>)
 <dd class="proc-def">
 <p>
-  Abbreviates <var>num</var> with an SI suffix as in the -h or --si option to
-  many GNU commands.  The base defaults to 1024, using suffix names
-  like Ki, Mi, Gi, etc.  Other bases (e.g. the standard 1000) have the
-  suffixes k, M, G, etc.
+  Abbreviates <var>num</var> with an SI suffix as in the -h or --si
+  option to many GNU commands.  The base defaults to 1024, using
+  suffix names like Ki, Mi, Gi, etc.  Other bases (e.g. the standard
+  1000) have the suffixes k, M, G, etc.  If <var>separator</var> is
+  provided, it is inserted after the number, before any suffix.
 
 <p>
 <pre class="code-example">
@@ -463,22 +485,34 @@ var {
 =&gt; "608"
 </pre>
 
+<pre class="code-example">
+(show #f (numeric/si 608) "B")
+=&gt; "608B"
+</pre>
+
+<pre class="code-example">
+(show #f (numeric/si 608 " ") "B")
+=&gt; "608 B"
+</pre>
 
 <pre class="code-example">
 (show #f (numeric/si 3986))
 =&gt; "3.9Ki"
 </pre>
 
-
 <pre class="code-example">
-(show #f (numeric/si 3986 1000 "B"))
+(show #f (numeric/si 3986 1000) "B")
 =&gt; "4kB"
 </pre>
 
+<pre class="code-example">
+(show #f (numeric/si 1.23e-6 1000) "m")
+=&gt; "1.23μm"
+</pre>
 
 <pre class="code-example">
-(show #f (numeric/si 1.23e-6 1000 "m"))
-=&gt; "1.23μm"
+(show #f (numeric/si 1.23e-6 1000 " ") "m")
+=&gt; "1.23 μm"
 </pre>
 
 <p>
@@ -490,9 +524,10 @@ var {
 <dt>(<a name="proc-numeric/fitted"><code class="proc-def">numeric/fitted</code></a> <var>width</var> <var>n</var> <var>.</var> <var>args</var>)
 <dd class="proc-def">
 <p>
-  Like <code>numeric</code>, but if the result doesn't fit in <var>width</var> using
-  the current <code>precision</code>, output instead a string of hashes
-  rather than showing an incorrectly truncated number.  For example
+  Like <code>numeric</code>, but if the result doesn't fit in
+  <var>width</var> using the current <code>precision</code>, output
+  instead a string of hashes rather than showing an incorrectly
+  truncated number.  For example
 
 <p>
 <pre class="code-example">
@@ -557,14 +592,13 @@ var {
   Outputs spaces up to the given <var>column</var>.  If the current column is
   already &gt;= <var>column</var>, does nothing.  The character used for spacing
   is the current value of <var>pad-char</var>, described below, which defaults
-  to space.
+  to space.  Columns are zero-based.
 
 <p>
 <pre class="code-example">
 (show #f "a" (space-to 5) "b")
 =&gt; "a   b"
 </pre>
-
 
 <pre class="code-example">
 (show #f "a" (space-to 0) "b")
@@ -579,7 +613,8 @@ var {
   Outputs spaces up to the next tab stop, using tab stops of width
   <var>tab-width</var>, which defaults to 8.  If already on a tab stop,
   does nothing.  If you want to ensure you always tab at least one
-  space, you can use <code>(each " " (tab-to width))</code>.
+  space, you can use <code>(each " " (tab-to width))</code>.  Columns
+  are zero-based.
 
 <p>
 <pre class="code-example">
@@ -587,12 +622,10 @@ var {
 =&gt; "b"
 </pre>
 
-
 <pre class="code-example">
 (show #f "a" (tab-to 5) "b")
 =&gt; "a    b"
 </pre>
-
 
 <pre class="code-example">
 (show #f "abcdefghi" (tab-to 5) "b")
@@ -714,7 +747,7 @@ var {
 <p>
   As <code>joined</code>, but counts from <var>start</var> (inclusive) to <var>end</var>
   (exclusive), formatting each integer in the range with <var>mapper</var>.  If
-  <var>end</var> is \scheme{#f} or unspecified, produces an infinite stream of
+  <var>end</var> is <code>#f</code> or unspecified, produces an infinite stream of
   output.
 
 <p>
@@ -789,7 +822,8 @@ var {
   ellipsis, respectively.  <code>trimmed/both</code> will both prepend and
   append.  The length of the <var>ellipsis</var> will be considered when
   truncating the original string, so that the total width will never
-  be longer than <var>width</var>.
+  be longer than <var>width</var>.  It is an error if <var>width</var> is
+  less than the length of <var>ellipsis</var>, or double the length for /both.
 
 <p>
 <pre class="code-example">
@@ -810,8 +844,9 @@ var {
 <dt>(<a name="proc-trimmed/lazy"><code class="proc-def">trimmed/lazy</code></a> <var>width</var> <var>fmt</var> <var>...</var>)
 <dd class="proc-def">
 <p>
-  A variant of <code>trimmed</code> which truncates and terminates
-  immediately if more than <var>width</var> characters are generated by <var>fmt</var>.
+  A variant of <code>trimmed</code> which generates each <var>fmt</var> in
+  left to right order, and truncates and terminates
+  immediately if more than <var>width</var> characters are generated.
   Thus this is safe to use with an infinite amount of output,
   e.g. from <code>written-simply</code> on an infinite list.
 </dd>
@@ -895,7 +930,10 @@ def     456
   positive integer is treated as a fixed width, ignoring the available
   width.  Any real number between 0 and 1 indicates a fraction of the
   available width (after subtracting out any fixed widths).  Columns
-  with unspecified width divide up the remaining width evenly.
+  with unspecified width divide up the remaining width evenly.  If the
+  extra space does not divide evenly, it is allocated column-wise left
+  to right, e.g. if the width of 78 is divided among 5 columns, the
+  column widths become 16, 16, 16, 15, 15 in order.
 
 <p>
   Note that <code>columnar</code> builds its output incrementally,
@@ -943,7 +981,10 @@ def     456
   Behaves like <code>each</code>, except text is accumulated and lines are
   wrapped to fit in the current <var>width</var> as in the Unix <code>fmt(1)</code>
   command.  Specifically, words are tokenized by splitting on all
-  <code>char-whitespace?</code> characters, and lines broken to minimize the
+  characters which satisfy the predicate in the parameter
+  <var>word-separator?</var>, which defaults to <code>char-whitespace?</code>.
+  Words are grouped into lines separating them by space, and line
+  breaks are introduced to minimize the
   sum of the cube of trailing whitespace on every line.
 </dd>
 
@@ -1333,8 +1374,38 @@ Riddles in the Dark....................................................115
 <dt><a name="proc-precision"><code class="proc-def">precision</code></a> 
 <dd class="proc-def">
 <p>
-  The precision for numeric output, as described in <code>numeric</code> and
-  <code>written</code>.
+  The precision for numeric output, as described in
+  <code>numeric</code> and <code>written</code>.  The precision
+  specifies the number of digits written after the decimal point.  If
+  the numeric value to be written out requires more digits to
+  reperesent it than precision, the written representation is chosen
+  which is closest to the numeric value and representable with the
+  specified precision.  If the numeric value falls on the midpoint of
+  two such representations, it is implementation dependent which
+  representation is chosen.
+
+<p>
+  When the numeric value is an inexact floating-point number, there are
+  more than one interpretations in this "rounding".  One way is to take
+  the effective value the floating-point number represents (e.g. if we
+  use binary floating-point numbers, we take the value of <code>(*
+  <i>sign</i> <i>mantissa</i> (expt 2 <i>exponent</i>))</code>), and
+  compares it to two closest numeric representations of the given
+  precision.  Another way is to obtain the default notation of the
+  floating-point number and apply rounding on it.  The former (we call
+  it effective rounding) is consistent with most floating-point number
+  operations, but may lead a non-intuitive result than the latter (we
+  call it notational rounding).  For example, 5.015 can't be represented
+  exactly in binary floating-point numbers.  With IEEE754 floating-point
+  numbers, the floating point number closest to 5.015 is smaller than
+  exact 5.015, i.e. <code>(< 5.015 5015/1000) => #t</code>.  With
+  effective rounding with precision 2, it should result "5.01".
+  However, the users who look at the notation may be confused by "5.015"
+  not being rounded up as they usually expect.  With notational rounding
+  the implementation chooses "5.02" (if it also adopts
+  round-half-to-infinity or round-half-up rule).  It is up to the
+  implementation to adopt which interpretation.
+
 </dd>
 
 <p>
@@ -1372,6 +1443,15 @@ Riddles in the Dark....................................................115
 </pre>
 </dd>
 
+<p>
+<dt><a name="proc-word-separator?"><code class="proc-def">word-separator?</code></a> 
+<dd class="proc-def">
+<p>
+  A character predicate used to tokenize words for
+  <code>wrapped</code> and <code>justify</code>.  Defaults to
+  <code>char-whitespace?</code>.  More flexibility is
+  available with <code>wrapped/list</code>.
+</dd>
 
 
 <p>
@@ -1379,8 +1459,8 @@ Riddles in the Dark....................................................115
 
 <p>
   A reference implementation in portable R7RS is available at
-  <a href="https://code.google.com/p/chibi-scheme/source/browse/lib/chibi/show.sld">https://code.google.com/p/chibi-scheme/source/browse/lib/chibi/show.sld</a>
-  depending only on SRFI 1, 69, 117, 130.   Note the reference
+  <a href="https://github.com/ashinn/chibi-scheme/blob/master/lib/chibi/show.sld">https://github.com/ashinn/chibi-scheme/blob/master/lib/chibi/show.sld</a>,
+  and included files, depending on SRFI 1, 69, 117, 130.  Note the reference
   implementation may not be up to date with the latest draft prior
   to finalization.
 
