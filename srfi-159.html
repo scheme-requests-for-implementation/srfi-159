@@ -1385,26 +1385,26 @@ Riddles in the Dark....................................................115
   representation is chosen.
 
 <p>
-  When the numeric value is an inexact floating-point number, there are
-  more than one interpretations in this "rounding".  One way is to take
+  When the numeric value is an inexact floating-point number, there is
+  more than one interpretation of this "rounding".  One is to take
   the effective value the floating-point number represents (e.g. if we
   use binary floating-point numbers, we take the value of <code>(*
   <i>sign</i> <i>mantissa</i> (expt 2 <i>exponent</i>))</code>), and
-  compares it to two closest numeric representations of the given
+  compare it to the two closest numeric representations of the given
   precision.  Another way is to obtain the default notation of the
-  floating-point number and apply rounding on it.  The former (we call
+  floating-point number and apply rounding to it.  The former (we call
   it effective rounding) is consistent with most floating-point number
-  operations, but may lead a non-intuitive result than the latter (we
+  operations, but may lead to a non-intuitive result than the latter (we
   call it notational rounding).  For example, 5.015 can't be represented
   exactly in binary floating-point numbers.  With IEEE754 floating-point
   numbers, the floating point number closest to 5.015 is smaller than
   exact 5.015, i.e. <code>(< 5.015 5015/1000) => #t</code>.  With
-  effective rounding with precision 2, it should result "5.01".
-  However, the users who look at the notation may be confused by "5.015"
+  effective rounding with precision 2, it should result in "5.01".
+  However, users who look at the notation may be confused by "5.015"
   not being rounded up as they usually expect.  With notational rounding
   the implementation chooses "5.02" (if it also adopts
   round-half-to-infinity or round-half-up rule).  It is up to the
-  implementation to adopt which interpretation.
+  implementation to choose which interpretation to adopt.
 
 </dd>
 
