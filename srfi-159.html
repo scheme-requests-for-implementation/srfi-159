@@ -232,6 +232,18 @@ var {
 <h1><a name="Specification">Specification</a></h1>
 
 <p>
+The SRFI is divided into a core implementation and three utility
+libraries, which could be defined portably in terms of the core but
+are provided as convenience extensions.  The libraries are as follows:
+
+<pre>
+  (srfi 159)           ; composite of all of the following
+  (srfi 159 base)      ; all bindings not in one of the following
+  (srfi 159 columnar)  ; all bindings in <a href="#Columnar-Formatting">Columnar Formatting</a>
+  (srfi 159 unicode)   ; all bindings in <a href="#Unicode">Unicode</a>
+  (srfi 159 color)     ; all bindings in <a href="#Formatting-with-Color">Formatting with Color</a>
+</pre>
+
 
 <p>
 <h2><a name="Usage">Usage</a></h2>
@@ -325,7 +337,8 @@ var {
 </pre>
 
 <pre class="code-example">
-(show #f 1/7 " " (with ((precision 3)) 1/7)  " " (with ((precision 20)) 1/7))
+(show #f 1/7 " " (with ((precision 3)) 1/7)
+             " " (with ((precision 20)) 1/7))
 =&gt; "1/7 0.143 0.14285714285714285714"
 </pre>
 
@@ -870,6 +883,9 @@ var {
 <p>
 <h2><a name="Columnar-Formatting">Columnar Formatting</a></h2>
 
+The following procedures are provided in the <code>(srfi 159 column)</code>
+library.
+
 <p>
   Although <code>tab-to</code>, <code>space-to</code> and padding/trimming can be
   used to manually align columns to produce table-like output, these
@@ -1085,6 +1101,8 @@ which might output:
 <p>
 <h2><a name="Formatting-with-Color">Formatting with Color</a></h2>
 
+The following procedures are provided in the <code>(srfi 159 color)</code> library.
+
 <p>
 <dt>(<a name="proc-as-red"><code class="proc-def">as-red</code></a> <var>fmt</var> <var>...</var>)
 <dd class="proc-def"></dd>
@@ -1116,6 +1134,8 @@ which might output:
 <p>
 <h2><a name="Unicode">Unicode</a></h2>
 
+The following procedures are provided in the <code>(srfi 159 unicode)</code> library.
+
 <p>
 <dt>(<a name="proc-as-unicode"><code class="proc-def">as-unicode</code></a> <var>fmt</var> <var>...</var>)
 <dd class="proc-def">
@@ -1136,6 +1156,17 @@ which might output:
   wide (as they typically are in fixed-width terminals), while
   treating combining and non-spacing characters as 0 characters wide.
 </dd>
+
+<p>
+<pre class="code-example">
+;; 3 characters padded to 5
+(show #f (with ((pad-char #\〜)) (padded/both 5 "日本語")))
+=&gt; "〜日本語〜"
+
+;; the 3 characters have a terminal width of 6 so are not padded
+(show #f (as-unicode (with ((pad-char #\〜)) (padded/both 5 "日本語"))))
+=&gt; "日本語"
+</pre>
 
 <p>
 <dt>(<a name="proc-unicode-terminal-width"><code class="proc-def">unicode-terminal-width</code></a> <var>str</var>)
@@ -1174,20 +1205,30 @@ which might output:
   underlying implementation is unspecified.
 
 <p>
-<dt>(<a name="proc-fn"><code class="proc-def">fn</code></a> ((<var>id</var> <var>state-var</var>) ...) <var>fmt</var> ...)
+<dt>(<a name="proc-fn"><code class="proc-def">fn</code></a> ((<var>id</var> <var>state-var</var>) ...) <var>expr</var> ... <var>fmt</var>)
 <dd class="proc-def">
 <p>
   Short for "function," this is the analog to <code>lambda</code>.  Returns a
-  formatter which on application evaluates each <var>fmt</var> in a lexical
+  formatter which on application evaluates each <var>expr</var> and
+  <var>fmt</var> in left-to-right order, in a lexical
   environment extended with each identifier <var>id</var> bound to the current
   value of the state variable named by the symbol <var>state-var</var>.  The
-  results of the <var>fmt</var>s is then applied as formatters, in succession
-  as with <code>each</code>.
+  result of the <var>fmt</var> is then applied as a formatter.
 
 <p>
   As a convenience, any <code>(id state-var)</code> list may be abbreviated
   as simply <code>id</code>, indicating <var>id</var> is bound to the state
   variable of the same (symbol) name.
+
+<p>
+<pre class="code-example">
+(show #f "column: " (fn (col) col))
+=&gt; "column: 8"
+
+(show #f "column: " (fn ((col1 col))
+                     (each col1 ", " (fn ((col2 col)) col2))))
+=&gt; "column: 8, 11"
+</pre>
 
 <p>
   The trivial case of no state variables is often useful to allow for
