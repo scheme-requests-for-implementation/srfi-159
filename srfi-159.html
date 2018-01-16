@@ -134,22 +134,31 @@ var {
   where necessary. The third goal is brevity and ease of use.
 
 <h1>Index</h1>
-<ul>
-<li><a href="#proc-show">show</a></li>
-<li><a href="#proc-displayed">displayed</a> <a href="#proc-written">written</a> <a href="#proc-written-simply">written-simply</a> <a href="#proc-pretty">pretty</a> <a href="#proc-pretty-simply">pretty-simply</a> <a href="#proc-escaped">escaped</a> <a href="#proc-maybe-escaped">maybe-escaped</a></li>
-<li><a href="#proc-numeric">numeric</a> <a href="#proc-numeric_2fcomma">numeric/comma</a> <a href="#proc-numeric_2fsi">numeric/si</a> <a href="#proc-numeric_2ffitted">numeric/fitted</a></li>
-<li><a href="#proc-nl">nl</a> <a href="#proc-fl">fl</a> <a href="#proc-space-to">space-to</a> <a href="#proc-tab-to">tab-to</a> <a href="#proc-nothing">nothing</a></li>
-<li><a href="#proc-each">each</a> <a href="#proc-each-in-list">each-in-list</a></li>
-<li><a href="#proc-joined">joined</a> <a href="#proc-joined_2fprefix">joined/prefix</a> <a href="#proc-joined_2fsuffix">joined/suffix</a> <a href="#proc-joined_2flast">joined/last</a> <a href="#proc-joined_2fdot">joined/dot</a> <a href="#proc-joined_2frange">joined/range</a></li>
-<li><a href="#proc-padded">padded</a> <a href="#proc-padded_2fright">padded/right</a> <a href="#proc-padded_2fboth">padded/both</a></li>
-<li><a href="#proc-trimmed">trimmed</a> <a href="#proc-trimmed_2fright">trimmed/right</a> <a href="#proc-trimmed_2fboth">trimmed/both</a></li>
-<li><a href="#proc-trimmed_2flazy">trimmed/lazy</a> <a href="#proc-fitted">fitted</a> <a href="#proc-fitted_2fright">fitted/right</a> <a href="#proc-fitted_2fboth">fitted/both</a></li>
-<li><a href="#proc-columnar">columnar</a> <a href="#proc-tabular">tabular</a> <a href="#proc-wrapped">wrapped</a> <a href="#proc-wrapped/list">wrapped/list</a> <a href="#proc-wrapped_2fchar">wrapped/char</a> <a href="#proc-justified">justified</a> <a href="#proc-from-file">from-file</a> <a href="#proc-line-numbers">line-numbers</a></li>
-<li><a href="#proc-as-red">as-red</a> <a href="#proc-as-blue">as-blue</a> <a href="#proc-as-green">as-green</a> <a href="#proc-as-cyan">as-cyan</a> <a href="#proc-as-yellow">as-yellow</a> <a href="#proc-as-magenta">as-magenta</a> <a href="#proc-as-white">as-white</a> <a href="#proc-as-black">as-black</a> <a href="#proc-as-bold">as-bold</a> <a href="#proc-as-underline">as-underline</a></li>
-<li><a href="#proc-as-unicode">as-unicode</a> <a href="#proc-unicode-terminal-width">unicode-terminal-width</a></li>
-<li><a href="#proc-fn">forked</a> <a href="#proc-with">forked</a> <a href="#proc-with!">forked</a> <a href="#proc-forked">forked</a> <a href="#proc-call-with-output">call-with-output</a></li>
-<li><a href="#proc-port">port</a> <a href="#proc-row">row</a> <a href="#proc-col">col</a> <a href="#proc-width">width</a> <a href="#proc-output">output</a> <a href="#proc-writer">writer</a> <a href="#proc-string-width">string-width</a> <a href="#proc-pad-char">pad-char</a> <a href="#proc-ellipsis">ellipsis</a> <a href="#proc-radix">radix</a> <a href="#proc-precision">precision</a> <a href="#proc-decimal-sep">decimal-sep</a> <a href="#proc-decimal-align">decimal-align</a></li>
-</ul>
+<pre>
+<b>Base</b>
+<a href="#proc-show">show</a> <a href="#proc-each">each</a> <a href="#proc-each-in-list">each-in-list</a>
+<a href="#proc-displayed">displayed</a> <a href="#proc-written">written</a> <a href="#proc-written-simply">written-simply</a>
+<a href="#proc-pretty">pretty</a> <a href="#proc-pretty-simply">pretty-simply</a> <a href="#proc-escaped">escaped</a> <a href="#proc-maybe-escaped">maybe-escaped</a>
+<a href="#proc-numeric">numeric</a> <a href="#proc-numeric_2fcomma">numeric/comma</a> <a href="#proc-numeric_2fsi">numeric/si</a> <a href="#proc-numeric_2ffitted">numeric/fitted</a>
+<a href="#proc-nl">nl</a> <a href="#proc-fl">fl</a> <a href="#proc-space-to">space-to</a> <a href="#proc-tab-to">tab-to</a> <a href="#proc-nothing">nothing</a>
+<a href="#proc-joined">joined</a> <a href="#proc-joined_2fprefix">joined/prefix</a> <a href="#proc-joined_2fsuffix">joined/suffix</a>
+<a href="#proc-joined_2flast">joined/last</a> <a href="#proc-joined_2fdot">joined/dot</a> <a href="#proc-joined_2frange">joined/range</a>
+<a href="#proc-padded">padded</a> <a href="#proc-padded_2fright">padded/right</a> <a href="#proc-padded_2fboth">padded/both</a>
+<a href="#proc-trimmed">trimmed</a> <a href="#proc-trimmed_2fright">trimmed/right</a> <a href="#proc-trimmed_2fboth">trimmed/both</a>
+<a href="#proc-trimmed_2flazy">trimmed/lazy</a> <a href="#proc-fitted">fitted</a> <a href="#proc-fitted_2fright">fitted/right</a> <a href="#proc-fitted_2fboth">fitted/both</a>
+<a href="#proc-fn">fn</a> <a href="#proc-with">with</a> <a href="#proc-with!">with!</a> <a href="#proc-forked">forked</a> <a href="#proc-call-with-output">call-with-output</a>
+<a href="#proc-port">port</a> <a href="#proc-row">row</a> <a href="#proc-col">col</a> <a href="#proc-width">width</a> <a href="#proc-output">output</a> <a href="#proc-writer">writer</a>
+<a href="#proc-string-width">string-width</a> <a href="#proc-pad-char">pad-char</a> <a href="#proc-ellipsis">ellipsis</a>
+<a href="#proc-radix">radix</a> <a href="#proc-precision">precision</a> <a href="#proc-decimal-sep">decimal-sep</a> <a href="#proc-decimal-align">decimal-align</a>
+<b>Columnar</b>
+<a href="#proc-columnar">columnar</a> <a href="#proc-tabular">tabular</a> <a href="#proc-wrapped">wrapped</a> <a href="#proc-wrapped/list">wrapped/list</a> <a href="#proc-wrapped_2fchar">wrapped/char</a>
+<a href="#proc-justified">justified</a> <a href="#proc-from-file">from-file</a> <a href="#proc-line-numbers">line-numbers</a>
+<b>Unicode</b>
+<a href="#proc-as-unicode">as-unicode</a> <a href="#proc-unicode-terminal-width">unicode-terminal-width</a>
+<b>Color</b>
+<a href="#proc-as-red">as-red</a> <a href="#proc-as-blue">as-blue</a> <a href="#proc-as-green">as-green</a> <a href="#proc-as-cyan">as-cyan</a> <a href="#proc-as-yellow">as-yellow</a>
+<a href="#proc-as-magenta">as-magenta</a> <a href="#proc-as-white">as-white</a> <a href="#proc-as-black">as-black</a> <a href="#proc-as-bold">as-bold</a> <a href="#proc-as-underline">as-underline</a>
+</pre>
 
 <h1><a name="Types-and-Naming-Conventions">Types and Naming Conventions</a></h1>
 
