@@ -39,18 +39,12 @@ var {
 <p>
   SRFI 159: Combinator Formatting
 
-<p>
-
-<p>
 </div>
 <h1><a name="Author">Author</a></h1>
 
 <p>
   Alex Shinn
 
-<p>
-
-<p>
 <h1><a name="Status">Status</a></h1>
 
 <p>This SRFI is currently in <em>draft</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+${1:NUMBER}+at+srfi+dotschemers+dot+org">srfi-159@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="https://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-159">archive</a>.</p>
@@ -59,6 +53,7 @@ var {
   <li>60-day deadline: 2017/10/20</li>
   <li>Draft #1 published: 2017/8/21</li>
   <li>Draft #2 published: 2017/11/24</li>
+  <li>Draft #3 published: 2018/1/8</li>
 </ul>
 
 <h1>Table of Contents</h1>
@@ -68,6 +63,7 @@ var {
 <li><a href="#Rationale">Rationale</a></li>
 <li><a href="#Types-and-Naming-Conventions">Types and Naming Conventions</a></li>
 <li><a href="#Specification">Specification</a></li>
+</ul>
 <ul>
 <li><a href="#Usage">Usage</a></li>
 <li><a href="#Formatting-Objects">Formatting Objects</a></li>
@@ -81,6 +77,7 @@ var {
 <li><a href="#Higher-Order-Formatters-and-State">Higher Order Formatters and State</a></li>
 <li><a href="#Standard-State-Variables">Standard State Variables</a></li>
 </ul>
+<ul>
 <li><a href="#Implementation">Implementation</a></li>
 <li><a href="#References">References</a></li>
 </ul>
@@ -93,9 +90,6 @@ var {
   these formatters efficiently without resorting to capturing and
   manipulating intermediate strings.
 
-<p>
-
-<p>
 <h1><a name="Issues">Issues</a></h1>
 
 <p>
@@ -107,7 +101,7 @@ var {
 
 <p>
   Procedures from fmt that have been left out: c and js formatters,
-  roman numerals.
+  Roman numerals.
 
 <p>
   The prefix width and alignment specifiers in columnar are concise
@@ -128,9 +122,6 @@ var {
 <p>
   Bikeshedding on names in general.
 
-<p>
-
-<p>
 <h1><a name="Rationale">Rationale</a></h1>
 
 <p>
@@ -174,9 +165,6 @@ var {
   arbitrarily large output and not build intermediate results except
   where necessary. The third goal is brevity and ease of use.
 
-<p>
-
-<p>
 <h1>Index</h1>
 <ul>
 <li><a href="#proc-show">show</a></li>
@@ -205,7 +193,6 @@ var {
   In the prototypes below the following naming conventions imply type
   restrictions:
 
-<p>
 <ul>
 <li><var>fmt</var>: either a formatter, or a string or char coerced to a formatter with <code>displayed</code>
 <li><var>formatter</var>: a formatter
@@ -220,14 +207,12 @@ var {
   and allows for a simple mapping between standard operations and
   their formatting counterparts:
 
-<p>
 <li><code>write</code>: <code>written</code>
 <li><code>display</code>: <code>displayed</code>
 <li><code>string-pad</code>: <code>padded</code>
 <li><code>string-trim</code>: <code>trimmed</code>
 <li><code>string-join</code>: <code>joined</code>
 
-<p>
 </ul>
 <h1><a name="Specification">Specification</a></h1>
 
@@ -245,10 +230,9 @@ are provided as convenience extensions.  The libraries are as follows:
 </pre>
 
 
-<p>
 <h2><a name="Usage">Usage</a></h2>
 
-<p>
+<dl>
 <dt>(<a name="proc-show"><code class="proc-def">show</code></a> <var>output-dest</var> <var>fmt</var> <var>...</var>)
 <dd class="proc-def">
 
@@ -265,7 +249,6 @@ are provided as convenience extensions.  The libraries are as follows:
   formatted as if wrapped with <code>displayed</code>, described below, so
   that
 
-<p>
 <pre class="code-example">
     (show #f "π = " (with ((precision 2)) (acos -1)) nl)
 </pre>
@@ -278,7 +261,6 @@ are provided as convenience extensions.  The libraries are as follows:
   existing formatters, and as first class objects may be named or
   computed dynamically, so that:
 
-<p>
 <pre class="code-example">
   (let ((~.2f (lambda (x) (with ((precision 2)) x))))
     (show #f "π = " (~.2f (acos -1)) nl))
@@ -295,10 +277,9 @@ are provided as convenience extensions.  The libraries are as follows:
 </dd>
 
 
-<p>
 <h2><a name="Formatting-Objects">Formatting Objects</a></h2>
 
-<p>
+<dl>
 <dt>(<a name="proc-displayed"><code class="proc-def">displayed</code></a> <var>obj</var>)
 <dd class="proc-def">
 
@@ -312,7 +293,7 @@ are provided as convenience extensions.  The libraries are as follows:
   in <code>show</code>, <code>each</code> and most other high-level formatters.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-written"><code class="proc-def">written</code></a> <var>obj</var>)
 <dd class="proc-def">
 
@@ -325,7 +306,6 @@ are provided as convenience extensions.  The libraries are as follows:
   the current <var>radix</var> is used if set to any of 2, 8, 10 or 16, and the
   fixed point <var>precision</var> is used if specified and the
   <var>radix</var> is 10.
-<p>
 <pre class="code-example">
 (show #f (written (cons 0 1)))
 =&gt; "(0 . 1)"
@@ -347,7 +327,6 @@ are provided as convenience extensions.  The libraries are as follows:
   numbers, for example, using <code>string-segment</code> from SRFI 152, the
   following code returns the first 100 Fibonacci numbers:
 
-<p>
 <pre class="code-example">
 (map string-&gt;number
      (string-segment
@@ -366,7 +345,7 @@ are provided as convenience extensions.  The libraries are as follows:
   (see <code>trimmed</code> and <code>fitted</code> below).
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-pretty"><code class="proc-def">pretty</code></a> <var>obj</var>)
 <dd class="proc-def">
 <p>
@@ -377,14 +356,14 @@ are provided as convenience extensions.  The libraries are as follows:
   symbol) in a tabular format when possible to reduce vertical space.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-pretty-simply"><code class="proc-def">pretty-simply</code></a> <var>obj</var>)
 <dd class="proc-def">
 <p>
   As above but without sharing.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-escaped"><code class="proc-def">escaped</code></a> <var>str</var> <var>[quote-ch</var> <var>esc-ch</var> <var>renamer]</var>)
 <dd class="proc-def">
 <p>
@@ -396,7 +375,6 @@ are provided as convenience extensions.  The libraries are as follows:
   character to its escape value, e.g. <code>#\newline =&gt; #\n</code>,
   or <code>#f</code> if there is no escape value.
 
-<p>
 <pre class="code-example">
 (show #f (escaped "hi, bob!"))
 =&gt; "hi, bob!"
@@ -416,7 +394,6 @@ are provided as convenience extensions.  The libraries are as follows:
   quotes and with escapes.  Otherwise outputs the string as is.  This
   is useful for quoting symbols and CSV output, etc.
 
-<p>
 <pre class="code-example">
 (show #f (maybe-escaped "foo" char-whitespace? #\"))
 =&gt; "foo"
@@ -434,10 +411,9 @@ are provided as convenience extensions.  The libraries are as follows:
 </dd>
 
 
-<p>
 <h2><a name="Formatting-Numbers">Formatting Numbers</a></h2>
 
-<p>
+<dl>
 <dt>(<a name="proc-numeric"><code class="proc-def">numeric</code></a> <var>num</var> <var>[radix</var> <var>precision</var> <var>sign</var> <var>comma</var> <var>comma-sep</var> <var>decimal-sep]</var>)
 <dd class="proc-def">
 <p>
@@ -470,13 +446,12 @@ are provided as convenience extensions.  The libraries are as follows:
   defaults from state variables, described below.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-numeric/comma"><code class="proc-def">numeric/comma</code></a> <var>num</var> <var>[base</var> <var>precision</var> <var>sign]</var>)
 <dd class="proc-def">
 <p>
   Shortcut for <code>numeric</code> to print with commas.
 
-<p>
 <pre class="code-example">
 (show #f (numeric/comma 1234567))
 =&gt; "1,234,567"
@@ -493,7 +468,6 @@ are provided as convenience extensions.  The libraries are as follows:
   1000) have the suffixes k, M, G, etc.  If <var>separator</var> is
   provided, it is inserted after the number, before any suffix.
 
-<p>
 <pre class="code-example">
 (show #f (numeric/si 608))
 =&gt; "608"
@@ -534,7 +508,7 @@ are provided as convenience extensions.  The libraries are as follows:
   list of abbreviations.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-numeric/fitted"><code class="proc-def">numeric/fitted</code></a> <var>width</var> <var>n</var> <var>.</var> <var>args</var>)
 <dd class="proc-def">
 <p>
@@ -543,7 +517,6 @@ are provided as convenience extensions.  The libraries are as follows:
   instead a string of hashes rather than showing an incorrectly
   truncated number.  For example
 
-<p>
 <pre class="code-example">
 (show #f (with ((precision 2)) (numeric/fitted 4 1.25)))
 =&gt; "1.25"
@@ -557,16 +530,14 @@ are provided as convenience extensions.  The libraries are as follows:
 </dd>
 
 
-<p>
 <h2><a name="Formatting-Space">Formatting Space</a></h2>
 
-<p>
+<dl>
 <dt><a name="proc-nl"><code class="proc-def">nl</code></a> 
 <dd class="proc-def">
 <p>
   Outputs a newline.
 
-<p>
 <pre class="code-example">
 (show #f nl)
 =&gt; "\n"
@@ -580,7 +551,6 @@ are provided as convenience extensions.  The libraries are as follows:
   Short for "fresh line," outputs a newline only if we're not already
   at the start of a line.
 
-<p>
 <pre class="code-example">
 (show #f fl)
 =&gt; ""
@@ -608,7 +578,6 @@ are provided as convenience extensions.  The libraries are as follows:
   is the current value of <var>pad-char</var>, described below, which defaults
   to space.  Columns are zero-based.
 
-<p>
 <pre class="code-example">
 (show #f "a" (space-to 5) "b")
 =&gt; "a   b"
@@ -630,7 +599,6 @@ are provided as convenience extensions.  The libraries are as follows:
   space, you can use <code>(each " " (tab-to width))</code>.  Columns
   are zero-based.
 
-<p>
 <pre class="code-example">
 (show #f (tab-to 5) "b")
 =&gt; "b"
@@ -654,7 +622,6 @@ are provided as convenience extensions.  The libraries are as follows:
   Outputs nothing (useful in combinators and as a default noop in
   conditionals).
 
-<p>
 <pre class="code-example">
 (show #f "a" nothing "b")
 =&gt; "ab"
@@ -664,13 +631,12 @@ are provided as convenience extensions.  The libraries are as follows:
 
 <h2><a name="Concatenation">Concatenation</a></h2>
 
-<p>
+<dl>
 <dt>(<a name="proc-each"><code class="proc-def">each</code></a> <var>fmt</var> <var>...</var>)
 <dd class="proc-def">
 <p>
   Applies each <var>fmt</var> in sequence, as in the top-level of show.
 
-<p>
 <pre class="code-example">
 (show #f (each "a" "b"))
 =&gt; "ab"
@@ -684,7 +650,7 @@ are provided as convenience extensions.  The libraries are as follows:
   Equivalent to <code>(apply each list-of-fmts)</code> but may be more efficient.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-joined"><code class="proc-def">joined</code></a> <var>mapper</var> <var>list</var> <var>[sep]</var>)
 <dd class="proc-def">
 <p>
@@ -692,7 +658,6 @@ are provided as convenience extensions.  The libraries are as follows:
   inserting <var>sep</var> in between.  <var>sep</var> defaults to the empty string, but
   can be any format or string.
 
-<p>
 <pre class="code-example">
 (show #f (joined displayed '(a b c) ", "))
 =&gt; "a, b, c"
@@ -704,7 +669,6 @@ are provided as convenience extensions.  The libraries are as follows:
 <dd class="proc-def"></dd>
 <dt>(<a name="proc-joined/suffix"><code class="proc-def">joined/suffix</code></a> <var>mapper</var> <var>list</var> <var>[sep]</var>)
 <dd class="proc-def">
-<p>
 <pre class="code-example">
 (show #f (joined/prefix displayed '(usr local bin) "/"))
 =&gt; "/usr/local/bin"
@@ -718,14 +682,12 @@ are provided as convenience extensions.  The libraries are as follows:
   As <code>joined</code>, but inserts <var>sep</var> before/after every element.
 </dd>
 
-<p>
 <dt>(<a name="proc-joined/last"><code class="proc-def">joined/last</code></a> <var>mapper</var> <var>last-mapper</var> <var>list</var> <var>[sep]</var>)
 <dd class="proc-def">
 <p>
   As <code>joined</code>, but the last element of the list is formatted with
   <var>last-mapper</var> instead.
 
-<p>
 <pre class="code-example">
 (show #f (joined/last displayed
                       (lambda (last) (each "and " last))
@@ -742,7 +704,6 @@ are provided as convenience extensions.  The libraries are as follows:
   As <code>joined</code>, but if the list is a dotted list, then formats the
   dotted value with <var>dot-mapper</var> instead.
 
-<p>
 <pre class="code-example">
 (show #f
       "("
@@ -764,7 +725,6 @@ are provided as convenience extensions.  The libraries are as follows:
   <var>end</var> is <code>#f</code> or unspecified, produces an infinite stream of
   output.
 
-<p>
 <pre class="code-example">
 (show #f (joined/range displayed 0 5 " "))
 =&gt; "0 1 2 3 4"
@@ -774,7 +734,7 @@ are provided as convenience extensions.  The libraries are as follows:
 
 <h2><a name="Padding-and-Trimming">Padding and Trimming</a></h2>
 
-<p>
+<dl>
 <dt>(<a name="proc-padded"><code class="proc-def">padded</code></a> <var>width</var> <var>fmt</var> <var>...</var>)
 <dd class="proc-def">
 <dt>(<a name="proc-padded/right"><code class="proc-def">padded/right</code></a> <var>width</var> <var>fmt</var> <var>...</var>)
@@ -797,7 +757,6 @@ are provided as convenience extensions.  The libraries are as follows:
   with multi-line output (padding doesn't seem a likely operation for
   multi-line output).
 
-<p>
 <pre class="code-example">
 (show #f (padded 5 "abc"))
 =&gt; "  abc"
@@ -839,7 +798,6 @@ are provided as convenience extensions.  The libraries are as follows:
   be longer than <var>width</var>.  It is an error if <var>width</var> is
   less than the length of <var>ellipsis</var>, or double the length for /both.
 
-<p>
 <pre class="code-example">
 (show #f (with ((ellipsis "...")) (trimmed 5 "abcde")))
 =&gt;  "abcde"
@@ -854,7 +812,6 @@ are provided as convenience extensions.  The libraries are as follows:
   <var>ellipsis</var>.
 </dd>
 
-<p>
 <dt>(<a name="proc-trimmed/lazy"><code class="proc-def">trimmed/lazy</code></a> <var>width</var> <var>fmt</var> <var>...</var>)
 <dd class="proc-def">
 <p>
@@ -865,7 +822,7 @@ are provided as convenience extensions.  The libraries are as follows:
   e.g. from <code>written-simply</code> on an infinite list.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-fitted"><code class="proc-def">fitted</code></a> <var>width</var> <var>fmt</var> <var>...</var>)
 <dd class="proc-def">
 <dt>(<a name="proc-fitted/right"><code class="proc-def">fitted/right</code></a> <var>width</var> <var>fmt</var> <var>...</var>)
@@ -878,9 +835,6 @@ are provided as convenience extensions.  The libraries are as follows:
   it goes under.
 </dd>
 
-<p>
-
-<p>
 <h2><a name="Columnar-Formatting">Columnar Formatting</a></h2>
 
 The following procedures are provided in the <code>(srfi 159 columnar)</code>
@@ -892,7 +846,7 @@ library.
   can be tedious to use.  The optional extensions in this section make
   this easier.
 
-<p>
+<dl>
 <dt>(<a name="proc-columnar"><code class="proc-def">columnar</code></a> <var>column</var> <var>...</var>)
 <dd class="proc-def">
 <p>
@@ -902,7 +856,6 @@ library.
   variable) is divided evenly among the columns, and all but the last
   column are right-padded.  For example
 
-<p>
 <pre class="code-example">
 (show #t (columnar (displayed "abc\ndef\n")
                    (displayed "123\n456\n")))
@@ -910,7 +863,6 @@ library.
 
   outputs
 
-<p>
 <pre class="output-example">
 abc     123
 def     456
@@ -922,7 +874,6 @@ def     456
   <code>columnar</code> treats raw strings as literals inserted into the
   given location on every line, to be used as borders, for example:
 
-<p>
 <pre class="code-example">
 (show #t (columnar "/* " (displayed "abc\ndef\n")
                    " | " (displayed "123\n456\n")
@@ -931,7 +882,6 @@ def     456
 
   would output
 
-<p>
 <pre class="output-example">
 /* abc | 123 */
 /* def | 456 */
@@ -963,14 +913,13 @@ def     456
   implementing the Unix <code>yes(1)</code> command, etc.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-tabular"><code class="proc-def">tabular</code></a> <var>column</var> <var>...</var>)
 <dd class="proc-def">
 <p>
   Equivalent to <code>columnar</code> except that each column is padded at
   least to the minimum width required on any of its lines.  Thus
 
-<p>
 <pre class="code-example">
 (show #t (tabular "|" (each "a\nbc\ndef\n") "|"
                       (each "123\n45\n6\n") "|"))
@@ -978,7 +927,6 @@ def     456
 
   outputs
 
-<p>
 <pre class="output-example">
 |a  |123|
 |bc |45 |
@@ -991,7 +939,6 @@ def     456
   cannot format a table larger than would fit in memory.
 </dd>
 
-<p>
 <dt>(<a name="proc-wrapped"><code class="proc-def">wrapped</code></a> <var>fmt</var> <var>...</var>)
 <dd class="proc-def">
 <p>
@@ -1005,14 +952,14 @@ def     456
   sum of the cube of trailing whitespace on every line.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-wrapped/list"><code class="proc-def">wrapped/list</code></a> <var>list-of-strings</var>)
 <dd class="proc-def">
 <p>
   Like wrapped, but taking a pre-tokenized list of strings.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-wrapped/char"><code class="proc-def">wrapped/char</code></a> <var>fmt</var> <var>...</var>)
 <dd class="proc-def">
 <p>
@@ -1021,13 +968,12 @@ def     456
   nothing to optimize and this formatter doesn't buffer output.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-justified"><code class="proc-def">justified</code></a> <var>&lt;format&gt;</var> <var>...</var>)
 <dd class="proc-def">
 <p>
   Like <code>wrapped</code> except the lines are full-justified.
 
-<p>
 <pre class="code-example">
 (define func
   '(define (fold kons knil ls)
@@ -1046,7 +992,6 @@ def     456
 
   outputs
 
-<p>
 <pre class="output-example">
 (define (fold kons knil ls)          ; The   fundamental   list   iterator.
   (let lp ((ls ls) (acc knil))       ; Applies  KONS  to  each  element  of
@@ -1067,7 +1012,7 @@ def     456
   arbitrary size.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-line-numbers"><code class="proc-def">line-numbers</code></a> <var>[start]</var>)
 <dd class="proc-def">
 <p>
@@ -1077,7 +1022,6 @@ def     456
 <p>
   The Unix <code>nl(1)</code> utility could be implemented as:
 
-<p>
 <pre class="code-example">
 (show #t (columnar 4 'right 'infinite (line-numbers)
                    " " (from-file "read-line.scm")))
@@ -1098,12 +1042,11 @@ which might output:
 </dd>
 
 
-<p>
 <h2><a name="Formatting-with-Color">Formatting with Color</a></h2>
 
 The following procedures are provided in the <code>(srfi 159 color)</code> library.
 
-<p>
+<dl>
 <dt>(<a name="proc-as-red"><code class="proc-def">as-red</code></a> <var>fmt</var> <var>...</var>)
 <dd class="proc-def"></dd>
 <dt>(<a name="proc-as-blue"><code class="proc-def">as-blue</code></a> <var>fmt</var> <var>...</var>)
@@ -1129,20 +1072,16 @@ The following procedures are provided in the <code>(srfi 159 color)</code> libra
   escapes, for use when formatting to a terminal.
 </dd>
 
-<p>
-
-<p>
 <h2><a name="Unicode">Unicode</a></h2>
 
 The following procedures are provided in the <code>(srfi 159 unicode)</code> library.
 
-<p>
+<dl>
 <dt>(<a name="proc-as-unicode"><code class="proc-def">as-unicode</code></a> <var>fmt</var> <var>...</var>)
 <dd class="proc-def">
 <p>
   Equivalent to
 
-<p>
 <pre class="code-example">
   (with ((string-width unicode-terminal-width)) fmt ...)
 </pre>
@@ -1157,7 +1096,6 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   treating combining and non-spacing characters as 0 characters wide.
 </dd>
 
-<p>
 <pre class="code-example">
 ;; 3 characters padded to 5
 (show #f (with ((pad-char #\〜)) (padded/both 5 "日本語")))
@@ -1168,14 +1106,13 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
 =&gt; "日本語"
 </pre>
 
-<p>
+<dl>
 <dt>(<a name="proc-unicode-terminal-width"><code class="proc-def">unicode-terminal-width</code></a> <var>str</var>)
 <dd class="proc-def">
 <p>
   A utility function which returns the integer number of columns <var>str</var>
   would require in a terminal, according to the following rules:
 
-<p>
 <ol>
 <li>non-spacing characters (format control characters with the property Cf, or non-spacing marks with the property Mn) count as 0 columns
 <li>characters with the East Asian Wide (W) or East Asian Fullwidth (F) properties, according to Unicode TR #11, count as 2 columns
@@ -1184,14 +1121,13 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
 <li>characters with the Ambiguous (A) property are implementation defined
 <li>ANSI terminal escapes, as output by the color formatters above, count as 0 columns
 <li>the tab character is implementation defined
+</ol>
 
 <p>
   Implementations should support the properties from at least the
   current Unicode specification at time of writing this SRFI, 10.0.0.
 </dd>
 
-<p>
-</ol>
 <h2><a name="Higher-Order-Formatters-and-State">Higher Order Formatters and State</a></h2>
 
 <p>
@@ -1204,7 +1140,7 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   A formatter is essentially an environment monad, although the
   underlying implementation is unspecified.
 
-<p>
+<dl>
 <dt>(<a name="proc-fn"><code class="proc-def">fn</code></a> ((<var>id</var> <var>state-var</var>) ...) <var>expr</var> ... <var>fmt</var>)
 <dd class="proc-def">
 <p>
@@ -1220,7 +1156,6 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   as simply <code>id</code>, indicating <var>id</var> is bound to the state
   variable of the same (symbol) name.
 
-<p>
 <pre class="code-example">
 (show #f "column: " (fn (col) col))
 =&gt; "column: 8"
@@ -1235,7 +1170,6 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   lazy applications of formatters, needed for conditional formatting
   and loops.  For example:
 
-<p>
 <pre class="code-example">
 (show #t (let lp ((ls ls))
            (if (pair? ls)
@@ -1246,7 +1180,6 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   would eagerly create a formatter concatenating every element of ls
   before starting to accumulate any output, whereas
 
-<p>
 <pre class="code-example">
 (show #t (let lp ((ls ls))
            (if (pair? ls)
@@ -1257,7 +1190,6 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   would lazily apply the formatters one at a time.
 </dd>
 
-<p>
 <dt>(<a name="proc-with"><code class="proc-def">with</code></a> ((<var>state-var</var> <var>value</var>) ...) <var>fmt</var> ...)
 <dd class="proc-def">
 <p>
@@ -1268,7 +1200,7 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   <var>state-var</var> to its original value.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-with!"><code class="proc-def">with!</code></a> (<var>state-var</var> <var>value</var>) ...)
 <dd class="proc-def">
 <p>
@@ -1277,7 +1209,7 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   in a sequence.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-forked"><code class="proc-def">forked</code></a> <var>fmt1</var> <var>fmt2</var>)
 <dd class="proc-def">
 <p>
@@ -1286,7 +1218,7 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   called.
 </dd>
 
-<p>
+<dl>
 <dt>(<a name="proc-call-with-output"><code class="proc-def">call-with-output</code></a> <var>formatter</var> <var>mapper</var>)
 <dd class="proc-def">
 <p>
@@ -1296,14 +1228,13 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   on the original state.
 </dd>
 
-<p>
 <h2><a name="Standard-State-Variables">Standard State Variables</a></h2>
 
 <p>
   The following state variables have predefined meanings with the
   formatters in this SRFI.
 
-<p>
+<dl>
 <dt><a name="proc-port"><code class="proc-def">port</code></a> 
 <dd class="proc-def">
 <p>
@@ -1311,21 +1242,21 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   capture intermediate output.
 </dd>
 
-<p>
+<dl>
 <dt><a name="proc-row"><code class="proc-def">row</code></a> 
 <dd class="proc-def">
 <p>
   The current row of output.
 </dd>
 
-<p>
+<dl>
 <dt><a name="proc-col"><code class="proc-def">col</code></a> 
 <dd class="proc-def">
 <p>
   The current column of output, used for padding and spacing, etc.
 </dd>
 
-<p>
+<dl>
 <dt><a name="proc-width"><code class="proc-def">width</code></a> 
 <dd class="proc-def">
 <p>
@@ -1333,7 +1264,7 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   The default is implementation-defined.
 </dd>
 
-<p>
+<dl>
 <dt><a name="proc-output"><code class="proc-def">output</code></a> 
 <dd class="proc-def">
 <p>
@@ -1345,7 +1276,7 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   behavior.
 </dd>
 
-<p>
+<dl>
 <dt><a name="proc-writer"><code class="proc-def">writer</code></a> 
 <dd class="proc-def">
 <p>
@@ -1354,7 +1285,7 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   <code>written</code>.
 </dd>
 
-<p>
+<dl>
 <dt><a name="proc-string-width"><code class="proc-def">string-width</code></a> 
 <dd class="proc-def">
 <p>
@@ -1362,14 +1293,13 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
   of that string, used by the default output.
 </dd>
 
-<p>
+<dl>
 <dt><a name="proc-pad-char"><code class="proc-def">pad-char</code></a> 
 <dd class="proc-def">
 <p>
   The character used by <code>space-to</code>, <code>tab-to</code> and other padding
   formatters.
 
-<p>
 <pre class="code-example">
 (define (print-table-of-contents alist)
   (define (print-line x)
@@ -1387,7 +1317,6 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
 
   would output
 
-<p>
 <pre class="output-example">
 An Unexpected Party.....................................................29
 Roast Mutton............................................................60
@@ -1404,7 +1333,7 @@ Riddles in the Dark....................................................115
   The string used when truncating as described in <code>trimmed</code>.
 </dd>
 
-<p>
+<dl>
 <dt><a name="proc-radix"><code class="proc-def">radix</code></a> 
 <dd class="proc-def">
 <p>
@@ -1412,7 +1341,7 @@ Riddles in the Dark....................................................115
   <code>numeric</code> and <code>written</code>.
 </dd>
 
-<p>
+<dl>
 <dt><a name="proc-precision"><code class="proc-def">precision</code></a> 
 <dd class="proc-def">
 <p>
@@ -1420,7 +1349,7 @@ Riddles in the Dark....................................................115
   <code>numeric</code> and <code>written</code>.  The precision
   specifies the number of digits written after the decimal point.  If
   the numeric value to be written out requires more digits to
-  reperesent it than precision, the written representation is chosen
+  represent it than precision, the written representation is chosen
   which is closest to the numeric value and representable with the
   specified precision.  If the numeric value falls on the midpoint of
   two such representations, it is implementation dependent which
@@ -1450,21 +1379,20 @@ Riddles in the Dark....................................................115
 
 </dd>
 
-<p>
+<dl>
 <dt><a name="proc-decimal-sep"><code class="proc-def">decimal-sep</code></a> 
 <dd class="proc-def">
 <p>
   The decimal separator for floating point output, default ".".
 </dd>
 
-<p>
+<dl>
 <dt><a name="proc-decimal-align"><code class="proc-def">decimal-align</code></a> 
 <dd class="proc-def">
 <p>
   Specifies an alignment for the decimal place when formatting
   numbers, useful for outputting tables of numbers.
 
-<p>
 <pre class="code-example">
 (define (print-angles x)
   (joined numeric (list x (sin x) (cos x) (tan x)) " "))
@@ -1475,7 +1403,6 @@ Riddles in the Dark....................................................115
 
   would output
 
-<p>
 <pre class="output-example">
  0.000    0.000    1.000    0.000
  1.000    0.842    0.540    1.557
@@ -1485,7 +1412,6 @@ Riddles in the Dark....................................................115
 </pre>
 </dd>
 
-<p>
 <dt><a name="proc-word-separator?"><code class="proc-def">word-separator?</code></a> 
 <dd class="proc-def">
 <p>
@@ -1496,7 +1422,6 @@ Riddles in the Dark....................................................115
 </dd>
 
 
-<p>
 <h1><a name="Implementation">Implementation</a></h1>
 
 <p>
@@ -1513,14 +1438,8 @@ Riddles in the Dark....................................................115
   and <code>trimmed/lazy</code> rely on first-class continuations, however an
   implementation written in CPS-style would not require this.
 
-<p>
-
-<p>
 <h1><a name="References">References</a></h1>
 
-<p>
-
-<p>
 <dl>
 <dt class="biblio"><a name="ref-R7RS"><strong>R7RS</strong></a>
 <dd>
