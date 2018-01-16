@@ -90,38 +90,6 @@ var {
   these formatters efficiently without resorting to capturing and
   manipulating intermediate strings.
 
-<h1><a name="Issues">Issues</a></h1>
-
-<p>
-  State variables are referenced by symbol, rather than exported
-  objects (which could in fact be parameters).  This is to keep the
-  code short in common cases and make it easier to add new states on
-  the fly, but can cause conflicts and doesn't catch spelling
-  mistakes.
-
-<p>
-  Procedures from fmt that have been left out: c and js formatters,
-  Roman numerals.
-
-<p>
-  The prefix width and alignment specifiers in columnar are concise
-  but first-class columns with a functional API might be cleaner.
-
-<p>
-  A utility function <code>pp</code>, trivially defined as
-  <code>(lambda (x) (show #t (pretty x)))</code>, might be nice.
-
-<p>
-  No discussion of date/time formatting.
-
-<p>
-  No discussion of internationalization, or how this SRFI might
-  interact in practice with something like gettext or SRFI 29, both of
-  which assume formats are strings.
-
-<p>
-  Bikeshedding on names in general.
-
 <h1><a name="Rationale">Rationale</a></h1>
 
 <p>
@@ -1427,9 +1395,7 @@ Riddles in the Dark....................................................115
 <p>
   A reference implementation in portable R7RS is available at
   <a href="https://github.com/ashinn/chibi-scheme/blob/master/lib/chibi/show.sld">https://github.com/ashinn/chibi-scheme/blob/master/lib/chibi/show.sld</a>,
-  and included files, depending on SRFI 1, 69, 117, 130.  Note the reference
-  implementation may not be up to date with the latest draft prior
-  to finalization.
+  and included files, depending on SRFI 1, 69, 117, 130.
 
 <p>
   The reference implementation is an environment monad, with a
