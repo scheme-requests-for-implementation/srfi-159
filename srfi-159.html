@@ -763,7 +763,7 @@ are provided as convenience extensions.  The libraries are as follows:
 <p>
   Analogs of SRFI 13 <code>string-trim</code>, these truncate the output of the
   <var>fmt</var>s to force it in under <var>width</var> columns.  As soon as any of
-  the <var>fmt</var>s exceed <var>width</var>, stop formatting and truncate the
+  the <var>fmt</var>s exceeds <var>width</var>, stop formatting and truncate the
   result, returning control to whoever called <var>trimmed</var>.  If <var>width</var>
   is not exceeded, is equivalent to <code>each</code>.
 
@@ -808,7 +808,7 @@ are provided as convenience extensions.  The libraries are as follows:
 <dt>(<a name="proc-fitted/both"><code class="proc-def">fitted/both</code></a> <var>width</var> <var>fmt</var> <var>...</var>)
 <dd class="proc-def">
 <p>
-  A combination of <code>padded</code> and <code>trimmed</code>, ensures the output
+  A combination of <code>padded</code> and <code>trimmed</code> that ensures that the output
   width is exactly <var>width</var>, truncating if it goes over and padding if
   it goes under.
 </dd>
@@ -1171,7 +1171,7 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
 <dt>(<a name="proc-with"><code class="proc-def">with</code></a> ((<var>state-var</var> <var>value</var>) ...) <var>fmt</var> ...)
 <dd class="proc-def">
 <p>
-  Conceptually the formatting equivalent of <code>parameterize,</code>
+  Conceptually the formatting equivalent of <code>parameterize</code>,
   temporarily altering state variables.  Applies each of the
   formatters <var>fmt</var> with each <var>state-var</var> bound to the corresponding
   <var>value</var>.  The resulting state is then updated to restore each
@@ -1238,7 +1238,7 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
 <dt><a name="proc-width"><code class="proc-def">width</code></a>
 <dd class="proc-def">
 <p>
-  The current line width, used for columnar, wrapping and pretty-printing.
+  The current line width, used for wrapping, pretty-printing, and columnar formatting.
   The default is implementation-defined.
 </dd>
 
@@ -1267,7 +1267,7 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
 <dt><a name="proc-string-width"><code class="proc-def">string-width</code></a>
 <dd class="proc-def">
 <p>
-  A function of a single string, which returns the length in columns
+  A function of a single string, it returns the length in columns
   of that string, used by the default output.
 </dd>
 
@@ -1343,7 +1343,7 @@ Riddles in the Dark....................................................115
   precision.  Another way is to obtain the default notation of the
   floating-point number and apply rounding to it.  The former (we call
   it effective rounding) is consistent with most floating-point number
-  operations, but may lead to a non-intuitive result than the latter (we
+  operations, but may lead to a more non-intuitive result than the latter (we
   call it notational rounding).  For example, 5.015 can't be represented
   exactly in binary floating-point numbers.  With IEEE754 floating-point
   numbers, the floating point number closest to 5.015 is smaller than
@@ -1369,7 +1369,7 @@ Riddles in the Dark....................................................115
 <dd class="proc-def">
 <p>
   Specifies an alignment for the decimal place when formatting
-  numbers, useful for outputting tables of numbers.
+  numbers, and is useful for outputting tables of numbers.
 
 <pre class="code-example">
 (define (print-angles x)
