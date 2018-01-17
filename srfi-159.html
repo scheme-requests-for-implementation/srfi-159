@@ -95,29 +95,31 @@ var {
   There are several approaches to text formatting. Concatenating
   strings to display is not acceptable, since it doesn't scale to very
   large output. The simplest realistic idea, and what people resort to
-  in typical portable Scheme, is to interleave display and write and
-  manual loops, but this is both extremely verbose and doesn't compose
-  well. A simple concept such as padding space can't be achieved
-  directly without somehow capturing intermediate output.
+  in typical portable Scheme, is to interleave <code>display</code>
+  and <code>write</code> and manual loops, but this is both extremely
+  verbose and doesn't compose well. A simple concept such as padding
+  space can't be achieved directly without somehow capturing intermediate
+  output.
 
-<p>
+  <p>
   The traditional approach in other languages is to use templates -
   typically strings, though in theory any object could be used and
   indeed Emacs's mode-line format templates allow arbitrary
-  sexps. Templates can use either escape sequences (as in C's printf
-  and Common Lisp's format) or pattern matching (as in Visual Basic's
-  Format, Perl6's form, and SQL date formats). The primary
+  sexps. Templates can use either escape sequences (as in C's <code>printf</code>
+  and Common Lisp's <code>format</code>) or pattern matching (as in Visual Basic's
+  Format, Perl6's <code>form</code>, and SQL date formats). The primary
   disadvantage of templates is the relative difficulty (usually
   impossibility) of extending them, their opaqueness, and the
   unreadability that arises with complex formats. Templates are not
   without their advantages, but they are already addressed by other
-  libraries such as SRFI 28 and SRFI 48.
+  libraries such as <a href="https://srfi.schemers.org/srfi-28">SRFI 28</a>
+  and <a href="https://srfi.schemers.org/srfi-48">SRFI 48</a>.
 
 <p>
-  Another important aspect of formatting is state.  Common Lisp format
+  Another important aspect of formatting is state.  Common Lisp <code>format</code>
   provides a "fresh-line" format spec which outputs a newline only if
   the output stream is not already at the beginning of a line.  C++
-  iostreams allow changing the radix and floating-point precision for
+  <code>iostream</code>s allow changing the radix and floating-point precision for
   numeric output, not just for a single value but as a persistent
   setting for all future output.  Custom formatters which could
   manipulate their own state would allow for many new possibilities.
@@ -438,7 +440,7 @@ are provided as convenience extensions.  The libraries are as follows:
 <dt>(<a name="proc-numeric/si"><code class="proc-def">numeric/si</code></a> <var>num</var> <var>[base</var> <var>separator]</var>)
 <dd class="proc-def">
 <p>
-  Abbreviates <var>num</var> with an SI suffix as in the -h or --si
+  Abbreviates <var>num</var> with an SI suffix as in the <code>-h</code> or <code>--si</code>
   option to many GNU commands.  The base defaults to 1024, using
   suffix names like Ki, Mi, Gi, etc.  Other bases (e.g. the standard
   1000) have the suffixes k, M, G, etc.  If <var>separator</var> is
@@ -611,7 +613,7 @@ are provided as convenience extensions.  The libraries are as follows:
 <dt>(<a name="proc-each"><code class="proc-def">each</code></a> <var>fmt</var> <var>...</var>)
 <dd class="proc-def">
 <p>
-  Applies each <var>fmt</var> in sequence, as in the top-level of show.
+  Applies each <var>fmt</var> in sequence, as in the top-level of <code>show</code>.
 
 <pre class="code-example">
 (show #f (each "a" "b"))
