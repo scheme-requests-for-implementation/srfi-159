@@ -457,7 +457,7 @@ are provided as convenience extensions.  The libraries are as follows:
 </pre>
 
 <pre class="code-example">
-(show #f (numeric/si 608 " ") "B")
+(show #f (numeric/si 608 1000 " ") "B")
 =&gt; "608 B"
 </pre>
 
@@ -473,12 +473,12 @@ are provided as convenience extensions.  The libraries are as follows:
 
 <pre class="code-example">
 (show #f (numeric/si 1.23e-6 1000) "m")
-=&gt; "1.23μm"
+=&gt; "1.2µm"
 </pre>
 
 <pre class="code-example">
 (show #f (numeric/si 1.23e-6 1000 " ") "m")
-=&gt; "1.23 μm"
+=&gt; "1.2 µm"
 </pre>
 
 <p>
@@ -558,7 +558,7 @@ are provided as convenience extensions.  The libraries are as follows:
 
 <pre class="code-example">
 (show #f "a" (space-to 5) "b")
-=&gt; "a   b"
+=&gt; "a    b"
 </pre>
 
 <pre class="code-example">
@@ -1259,8 +1259,8 @@ The following procedures are provided in the <code>(srfi 159 unicode)</code> lib
 <dd class="proc-def">
 <p>
   The mapper for automatic formatting of non-string/char values in
-  top-level <code>show</code>, <code>each</code> and other formatters.  Defaults to
-  <code>written</code>.
+  top-level <code>show</code>, <code>each</code> and other formatters.
+  Default value is implementation-defined.
 </dd>
 
 <dl>
