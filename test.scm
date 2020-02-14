@@ -1,17 +1,21 @@
-(define-library (chibi show-test)
-  (export run-tests)
   (import (scheme base) (scheme char) (scheme read) (scheme file)
           (only (srfi 1) circular-list)
-          (chibi test)
-          (chibi show) (chibi show base) (chibi show color)
-          (chibi show column) (chibi show pretty)
-          (chibi show unicode))
-  (begin
+          (srfi 159))
+
+(cond-expand
+ (larceny
+  (import (srfi 64))
+  (define (test expected actual)
+    (test-equal expected actual)))
+ (else
+  (import (chibi test))))
+
     (define-syntax test-pretty
       (syntax-rules ()
         ((test-pretty str)
          (let ((sexp (read (open-input-string str))))
            (test str (show #f (pretty sexp)))))))
+
     (define (run-tests)
       (test-begin "show")
 
@@ -24,8 +28,6 @@
       (test "#(1 2 3)" (show #f (written '#(1 2 3))))
       (test "(1 2 3)" (show #f (written '(1 2 3))))
       (test "(1 2 . 3)" (show #f (written '(1 2 . 3))))
-      (test "ABC" (show #f (upcased "abc")))
-      (test "abc" (show #f (downcased "ABC")))
 
       (test "a    b" (show #f "a" (space-to 5) "b"))
       (test "ab" (show #f "a" (space-to 0) "b"))
@@ -254,12 +256,15 @@
       (test "1%5" (show #f (numeric 1.5 10 #f #f #f #\. #\%)))
 
       (cond-expand
-       (complex
-        (test "1+2i" (show #f (string->number "1+2i")))
-        (test "1.00+2.00i"
+       (exact-complex
+        (test "1+2i" (show #f (string->number "1+2i"))))
+       (else))
+
+      ;; (cond ((library (scheme complex))..)) is enough?
+      (test "1.00+2.00i"
             (show #f (with ((precision 2)) (string->number "1+2i"))))
-        (test "3.14+2.00i"
-            (show #f (with ((precision 2)) (string->number "3.14159+2i"))))))
+      (test "3.14+2.00i"
+            (show #f (with ((precision 2)) (string->number "3.14159+2i"))))
 
       (test "608" (show #f (numeric/si 608)))
       (test "608 B" (show #f (numeric/si 608 1000 " ") "B"))
@@ -448,10 +453,6 @@
           (show #f (written (let ((ones (list 1)))
                               (list ones ones)))))
 
-      (test "(#0=(1) #0#)"
-          (show #f (written-shared (let ((ones (list 1)))
-                                     (list ones ones)))))
-
       ;; cycles without shared detection
 
       (test "(1 1 1 1 1"
@@ -594,15 +595,6 @@
           (show #f (show-columns (list (lambda (x) (padded/right 5 x))
                                        "abc\ndef\n")
                                  (list displayed "123\n456\n"))))
-      (test "ABC  123\nDEF  456\n"
-          (show #f (show-columns (list (lambda (x) (upcased (padded/right 5 x)))
-                                       "abc\ndef\n")
-                                 (list displayed "123\n456\n"))))
-      (test "ABC  123\nDEF  456\n"
-          (show #f (show-columns (list (lambda (x) (padded/right 5 (upcased x)))
-                                       "abc\ndef\n")
-                                 (list displayed "123\n456\n"))))
-
       (test "hello\nworld\n"
           (show #f (with ((width 8)) (wrapped "hello world"))))
       (test "\n" (show #f (wrapped "    ")))
@@ -737,12 +729,18 @@ def | 6
             (show #f (as-unicode (as-red "1234567") (fn ((col)) (each " col: " col)))))
 
       ;; unicode
-      (test "〜日本語〜"
-          (show #f (with ((pad-char #\〜)) (padded/both 5 "日本語"))))
-      (test "日本語"
-            (show #f (as-unicode (with ((pad-char #\〜)) (padded/both 5 "日本語")))))
-      (test "日本語 col: 6"
-            (show #f (as-unicode "日本語" (fn ((col)) (each " col: " col)))))
+      ;;
+      ;; Note that Gerbil (and probably Gambit) does not like #\〜. You
+      ;; may have to delete this part to run tests.
+      (cond-expand
+       (full-unicode
+        (test "〜日本語〜"
+              (show #f (with ((pad-char #\〜)) (padded/both 5 "日本語"))))
+        (test "日本語"
+              (show #f (as-unicode (with ((pad-char #\〜)) (padded/both 5 "日本語")))))
+        (test "日本語 col: 6"
+              (show #f (as-unicode "日本語" (fn ((col)) (each " col: " col))))))
+       (else))
 
       ;; from-file
       ;; for reference, filesystem-test relies on creating files under /tmp
@@ -756,4 +754,6 @@ def | 6
          (show #f (columnar 4 'right 'infinite (line-numbers) " " (from-file tmp-file))))
         (delete-file tmp-file))
 
-      (test-end))))
+      (test-end))
+
+(run-tests)

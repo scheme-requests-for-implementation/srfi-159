@@ -6,37 +6,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;> The environment monad with some pre-defined fields for combinator
-;;> formatting.
-
-(define-environment-monad Show-Env
-  (sequence: sequence)
-  (bind: %fn)
-  (bind-fork: forked)
-  (local: %with)
-  (local!: with!)
-  (return: return)
-  (run: run)
-  (fields:
-   (port env-port env-port-set!)
-   (row env-row env-row-set!)
-   (col env-col env-col-set!)
-   (width env-width env-width-set!)
-   (radix env-radix env-radix-set!)
-   (precision env-precision env-precision-set!)
-   (pad-char env-pad-char env-pad-char-set!)
-   (decimal-sep env-decimal-sep env-decimal-sep-set!)
-   (decimal-align env-decimal-align env-decimal-align-set!)
-   (string-width env-string-width env-string-width-set!)
-   (ellipsis env-ellipsis env-ellipsis-set!)
-   (writer env-writer env-writer-set!)
-   (output env-output env-output-set!)))
-
-(define-syntax fn
-  (syntax-rules ()
-    ((fn vars expr ... fmt)
-     (%fn vars expr ... (displayed fmt)))))
-
 ;; The base formatting handles outputting raw strings and a simple,
 ;; configurable handler for formatting objects.
 
@@ -68,7 +37,7 @@
       (show-run (current-output-port) proc))
      ((eq? #f out)
       (let ((out (open-output-string)))
-        (show-run out proc) 
+        (show-run out proc)
         (get-output-string out)))
      (else
       (error "unknown output to show" out)))))
@@ -84,13 +53,6 @@
                         (output output-default)
                         (string-width substring-length))
                  proc)))
-
-;;> Temporarily bind the parameters in the body \var{x}.
-
-(define-syntax with
-  (syntax-rules ()
-    ((with params x ... y)
-     (%with params (each x ... y)))))
 
 ;;> The noop formatter.  Generates no output and leaves the state
 ;;> unmodified.
@@ -129,9 +91,9 @@
 (define (output-default str)
   (fn (port row col string-width)
     (display str port)
-    (let ((nl-index (string-find-right str #\newline)))
+    (let ((nl-index (string-index-right str #\newline)))
       (if (string-cursor>? nl-index (string-cursor-start str))
-          (with! (row (+ row (string-count str #\newline)))
+          (with! (row (+ row (string-count str (lambda (x)  (char=? x #\newline)))))
                  (col (string-width str (string-cursor->index str nl-index))))
           (with! (col (+ col (string-width str))))))))
 
