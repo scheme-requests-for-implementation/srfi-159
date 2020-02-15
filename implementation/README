@@ -19,6 +19,4 @@ Tested on Gauche, Chibi, Larceny, Gerbil [2], Sagittarius.
     understand. But also the macro triggered some bug in Gauche where
     all this work started.
 
-[2] Not fully passed. Some numeric formatting problems. And you have
-    to remove some unicode tests in test.scm because Gerbil is not
-    happy with #\<unicode>
+[2] Not fully passed. Some numeric formatting problems.

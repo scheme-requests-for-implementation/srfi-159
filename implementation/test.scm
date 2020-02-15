@@ -729,15 +729,12 @@ def | 6
             (show #f (as-unicode (as-red "1234567") (fn ((col)) (each " col: " col)))))
 
       ;; unicode
-      ;;
-      ;; Note that Gerbil (and probably Gambit) does not like #\〜. You
-      ;; may have to delete this part to run tests.
       (cond-expand
        (full-unicode
         (test "〜日本語〜"
-              (show #f (with ((pad-char #\〜)) (padded/both 5 "日本語"))))
+              (show #f (with ((pad-char #\x301C)) (padded/both 5 "日本語"))))
         (test "日本語"
-              (show #f (as-unicode (with ((pad-char #\〜)) (padded/both 5 "日本語")))))
+              (show #f (as-unicode (with ((pad-char #\x301C)) (padded/both 5 "日本語")))))
         (test "日本語 col: 6"
               (show #f (as-unicode "日本語" (fn ((col)) (each " col: " col))))))
        (else))
