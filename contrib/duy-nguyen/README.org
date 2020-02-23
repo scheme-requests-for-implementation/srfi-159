@@ -1,0 +1,24 @@
+Duy Nguyen took this implementation from Chibi Scheme and updated it to
+remove dependencies on ~(chibi show)~, ~(chibi string)~, and ~(chibi
+monad environment)~.
+
+Some files were reorganized a bit.  Non-public ~sld~'s are all in
+~(srfi 159 internal)~.  ~show.scm~ is renamed ~util.scm~.  The
+environment monad is simply expanded[fn:macro] in monad.scm
+
+Note, some code may still rely on SRFI 13 predicate behavior even
+though SRFI 130 is imported. If a Scheme is very strict about this,
+you may see some errors.
+
+The ~(chibi test)~ library is also embedded to run ~test.scm~, but
+~(srfi 64)~ should probably work fine.  (Larceny uses this because
+there's some problem with running ~(chibi test)~ on it.)
+
+Tested on Gauche, Chibi, Larceny, Gerbil[fn:tests], Sagittarius.
+
+[fn:macro] There's no point to having a single-use monad macro; it's
+just harder to understand.  Also, the macro triggered some bug in
+Gauche where all this work started.
+
+[fn:tests] Not all tests passed on Gerbil.  There were some numeric
+formatting problems.
