@@ -8,9 +8,9 @@ keywords: [[https://srfi.schemers.org/?keywords=i/o][I/O]], [[https://srfi.schem
 
 This repository hosts [[https://srfi.schemers.org/srfi-159/][SRFI 159]]: Combinator Formatting, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
-This SRFI is in /final/ status.
+This SRFI is in /withdrawn/ status.
 
-See also [[https://srfi.schemers.org/srfi-28/][SRFI 28: Basic Format Strings]] and [[https://srfi.schemers.org/srfi-48/][SRFI 48: Intermediate Format Strings]].
+See also [[https://srfi.schemers.org/srfi-28/][SRFI 28: Basic Format Strings]], [[https://srfi.schemers.org/srfi-48/][SRFI 48: Intermediate Format Strings]], and [[https://srfi.schemers.org/srfi-166/][SRFI 166: Monadic Formatting]].
 
 The full documentation for this SRFI can be found in the [[https://srfi.schemers.org/srfi-159/srfi-159.html][SRFI Document]].
 
