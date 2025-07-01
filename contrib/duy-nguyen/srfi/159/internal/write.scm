@@ -152,7 +152,7 @@
           (let lp ((ls ls) (res '()))
             (cond
              ((null? ls)
-              (cons 1 res))
+              (append-reverse res '(1)))
              ((not (number? (car ls)))
               (lp (cdr ls) (cons (car ls) res)))
              ((= (car ls) (- radix 1))
