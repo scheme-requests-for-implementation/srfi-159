@@ -82,6 +82,7 @@
       (test "1.00" (show #f (with ((precision 2)) .997)))
       (test "0.99" (show #f (with ((precision 2)) .99)))
       (test "-15" (show #f (with ((precision 0)) -14.99995999999362)))
+      (test "10.00" (show #f (with ((precision 2)) 9.999)))
 
       (test "   3.14159" (show #f (with ((decimal-align 5)) (numeric 3.14159))))
       (test "  31.4159" (show #f (with ((decimal-align 5)) (numeric 31.4159))))
